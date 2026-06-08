@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GS Paaji — Gurvir Singh Bhatia | Stock Market Mentor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy:       #0b1a35;
+            --navy-mid:   #122040;
+            --navy-light: #1a2f58;
+            --gold:       #c89c2a;
+            --gold-light: #e6b84a;
+            --gold-pale:  #f5e8c0;
+            --cream:      #faf6ee;
+            --green:      #1a5c35;
+            --green-light:#22754a;
+            --white:      #ffffff;
+            --gray:       #8a8a9a;
+            --text-dark:  #1a1a2e;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--cream);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* ── NAV ────────────────────────────────── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+            background: rgba(11,26,53,.96);
+            backdrop-filter: blur(12px);
+            padding: 15px 48px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(200,156,42,.25);
+        }
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold); font-size: 1.45rem; font-weight: 700;
+            letter-spacing: .04em;
+        }
+        .nav-links { display: flex; gap: 36px; list-style: none; }
+        .nav-links a {
+            color: rgba(255,255,255,.7); text-decoration: none;
+            font-size: .82rem; font-weight: 600;
+            letter-spacing: .1em; text-transform: uppercase;
+            transition: color .25s;
+        }
+        .nav-links a:hover { color: var(--gold); }
+
+        /* ── HERO ───────────────────────────────── */
+        .hero {
+            min-height: 100vh;
+            background: var(--navy);
+            display: flex; align-items: center;
+            padding: 110px 48px 72px;
+            position: relative; overflow: hidden;
+        }
+        /* ambient glow */
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 700px; height: 700px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(200,156,42,.12) 0%, transparent 70%);
+            right: -100px; top: 50%; transform: translateY(-50%);
+            pointer-events: none;
+        }
+        /* diagonal lattice texture */
+        .hero-lattice {
+            position: absolute; inset: 0; opacity: .035;
+            background-image:
+                repeating-linear-gradient(45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%),
+                repeating-linear-gradient(-45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%);
+            background-size: 28px 28px;
+        }
+
+        .hero-content {
+            max-width: 1200px; margin: 0 auto; width: 100%;
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 80px; align-items: center;
+            position: relative; z-index: 2;
+        }
+
+        /* --- hero text --- */
+        .hero-text { animation: fadeL .85s ease both; }
+        @keyframes fadeL { from { opacity:0; transform:translateX(-28px); } to { opacity:1; transform:translateX(0); } }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(200,156,42,.12);
+            border: 1px solid rgba(200,156,42,.4);
+            color: var(--gold-light);
+            padding: 8px 22px; border-radius: 100px;
+            font-size: .78rem; font-weight: 700;
+            letter-spacing: .12em; text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+        .hero-badge::before {
+            content: '●'; color: var(--gold);
+            animation: blink 2s ease-in-out infinite;
+        }
+        @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.3;} }
+
+        .hero-name {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 5vw, 4.4rem);
+            color: var(--white); line-height: 1.1;
+            margin-bottom: 10px;
+        }
+        .hero-name span { color: var(--gold); display: block; }
+
+        .hero-title {
+            font-size: .95rem; color: rgba(255,255,255,.45);
+            letter-spacing: .08em; text-transform: uppercase;
+            font-weight: 500; margin-bottom: 28px;
+        }
+
+        .hero-desc {
+            font-size: 1.05rem; color: rgba(255,255,255,.72);
+            line-height: 1.85; margin-bottom: 40px; max-width: 490px;
+        }
+        .hero-desc strong { color: var(--gold-light); }
+
+        .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--navy); padding: 14px 30px; border-radius: 9px;
+            font-weight: 700; font-size: .92rem; letter-spacing: .02em;
+            text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: all .3s;
+        }
+        .btn-gold:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 40px rgba(200,156,42,.45);
+        }
+        .btn-ghost {
+            background: transparent; color: var(--white);
+            padding: 14px 30px; border-radius: 9px;
+            font-weight: 500; font-size: .92rem;
+            text-decoration: none; border: 1px solid rgba(255,255,255,.28);
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: all .3s;
+        }
+        .btn-ghost:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.5); }
+
+        /* --- hero photo --- */
+        .hero-photo-side {
+            display: flex; justify-content: center; align-items: center;
+            animation: fadeR .85s ease .15s both;
+        }
+        @keyframes fadeR { from { opacity:0; transform:translateX(28px); } to { opacity:1; transform:translateX(0); } }
+
+        .photo-ring-outer {
+            position: relative;
+            width: 360px; height: 360px;
+        }
+        /* spinning gold ring */
+        .photo-ring-outer::before {
+            content: '';
+            position: absolute; inset: -14px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            background: conic-gradient(var(--gold), transparent 40%, var(--green), transparent 70%, var(--gold)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            animation: spin 9s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .hero-photo {
+            width: 360px; height: 360px; border-radius: 50%;
+            object-fit: cover; object-position: top center;
+            border: 5px solid var(--gold);
+            box-shadow: 0 0 70px rgba(200,156,42,.22), 0 30px 80px rgba(0,0,0,.35);
+        }
+        /* placeholder shown when no real image */
+        .photo-placeholder {
+            width: 360px; height: 360px; border-radius: 50%;
+            background: linear-gradient(145deg, var(--navy-light) 0%, #1e3a6e 100%);
+            border: 5px solid var(--gold);
+            box-shadow: 0 0 70px rgba(200,156,42,.22), 0 30px 80px rgba(0,0,0,.35);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+        }
+        .photo-placeholder svg { width: 110px; height: 110px; fill: rgba(200,156,42,.35); }
+        .photo-placeholder p {
+            color: rgba(200,156,42,.55); font-size: .8rem;
+            margin-top: 14px; text-align: center;
+            padding: 0 30px; line-height: 1.5;
+        }
+
+        /* ── STATS BAR ──────────────────────────── */
+        .stats-bar {
+            background: var(--navy-mid);
+            border-top: 1px solid rgba(200,156,42,.2);
+            border-bottom: 1px solid rgba(200,156,42,.2);
+            padding: 34px 48px;
+        }
+        .stats-inner {
+            max-width: 1100px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(4,1fr);
+            gap: 32px; text-align: center;
+        }
+        .stat-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.9rem; color: var(--gold);
+            font-weight: 700; line-height: 1; margin-bottom: 7px;
+        }
+        .stat-label {
+            color: rgba(255,255,255,.45);
+            font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+        }
+
+        /* ── SECTION BASE ───────────────────────── */
+        .section { padding: 92px 48px; }
+        .section-inner { max-width: 1200px; margin: 0 auto; }
+        .section-eyebrow {
+            font-size: .75rem; letter-spacing: .16em;
+            text-transform: uppercase; color: var(--gold);
+            font-weight: 700; margin-bottom: 12px;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.9rem, 3.2vw, 2.7rem);
+            color: var(--navy); line-height: 1.2; margin-bottom: 20px;
+        }
+        .section-title.light { color: var(--white); }
+
+        /* ── ABOUT ──────────────────────────────── */
+        .about-section { background: var(--cream); }
+        .about-grid {
+            display: grid; grid-template-columns: 1.2fr 1fr;
+            gap: 80px; align-items: start;
+        }
+        .about-prose { font-size: 1.02rem; color: #4a4a5a; line-height: 1.9; }
+        .about-prose p { margin-bottom: 20px; }
+        .about-prose strong { color: var(--navy); }
+
+        .blockquote {
+            background: var(--navy);
+            border-left: 4px solid var(--gold);
+            padding: 28px 34px;
+            border-radius: 0 14px 14px 0;
+            margin-top: 32px;
+        }
+        .blockquote p {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem; font-style: italic;
+            color: rgba(255,255,255,.85); line-height: 1.7; margin: 0;
+        }
+        .blockquote cite {
+            display: block; color: var(--gold);
+            font-style: normal; font-size: .82rem;
+            font-weight: 700; letter-spacing: .05em; margin-top: 12px;
+        }
+
+        .about-cards { display: flex; flex-direction: column; gap: 20px; }
+        .acard {
+            background: var(--white); border: 1px solid rgba(200,156,42,.18);
+            border-radius: 16px; padding: 24px 28px;
+            transition: all .3s;
+        }
+        .acard:hover {
+            border-color: var(--gold);
+            transform: translateX(6px);
+            box-shadow: 0 8px 30px rgba(0,0,0,.07);
+        }
+        .acard-icon { font-size: 1.7rem; margin-bottom: 9px; }
+        .acard h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem; color: var(--navy); margin-bottom: 5px;
+        }
+        .acard p { font-size: .88rem; color: #666; line-height: 1.6; }
+
+        /* ── EXPERTISE ──────────────────────────── */
+        .expertise-section {
+            background: var(--navy);
+            position: relative; overflow: hidden;
+        }
+        .expertise-section::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 85% 60%, rgba(26,92,53,.18) 0%, transparent 55%);
+            pointer-events: none;
+        }
+        .expertise-header {
+            text-align: center; max-width: 680px;
+            margin: 0 auto 60px;
+            position: relative; z-index: 2;
+        }
+        .expertise-header p { color: rgba(255,255,255,.6); font-size: 1.02rem; line-height: 1.8; margin-top: 14px; }
+
+        .expertise-grid {
+            display: grid; grid-template-columns: repeat(3,1fr);
+            gap: 22px; position: relative; z-index: 2;
+        }
+        .ecard {
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(200,156,42,.14);
+            border-radius: 20px; padding: 34px 26px;
+            position: relative; overflow: hidden;
+            transition: all .35s;
+        }
+        .ecard::after {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            transform: scaleX(0); transform-origin: left;
+            transition: transform .35s;
+        }
+        .ecard:hover { background: rgba(255,255,255,.07); border-color: rgba(200,156,42,.4); transform: translateY(-7px); }
+        .ecard:hover::after { transform: scaleX(1); }
+
+        .ecard-icon {
+            width: 54px; height: 54px;
+            background: rgba(200,156,42,.12); border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.55rem; margin-bottom: 18px;
+        }
+        .ecard h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem; color: var(--white); margin-bottom: 10px;
+        }
+        .ecard p { font-size: .88rem; color: rgba(255,255,255,.5); line-height: 1.7; }
+
+        /* ── ROLES ──────────────────────────────── */
+        .roles-section { background: var(--cream); }
+        .roles-header { text-align: center; max-width: 680px; margin: 0 auto 50px; }
+        .roles-header p { color: #666; font-size: 1rem; line-height: 1.8; margin-top: 12px; }
+
+        .roles-grid {
+            display: grid; grid-template-columns: repeat(5,1fr);
+            gap: 18px;
+        }
+        .rcard {
+            background: var(--white); border-radius: 20px;
+            padding: 32px 18px; text-align: center;
+            border: 1px solid transparent;
+            transition: all .35s;
+        }
+        .rcard:hover {
+            border-color: var(--gold);
+            transform: translateY(-9px);
+            box-shadow: 0 22px 55px rgba(0,0,0,.1);
+        }
+        .rcard-emoji { font-size: 2.6rem; display: block; margin-bottom: 15px; }
+        .rcard h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem; color: var(--navy); margin-bottom: 7px;
+        }
+        .rcard p { font-size: .8rem; color: #888; line-height: 1.55; }
+
+        /* ── PHILOSOPHY ─────────────────────────── */
+        .philosophy-section {
+            background: linear-gradient(135deg, var(--navy) 0%, #0e2040 55%, var(--green) 100%);
+            padding: 92px 48px;
+        }
+        .philosophy-inner { max-width: 920px; margin: 0 auto; text-align: center; }
+        .phil-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.45rem, 2.8vw, 2.1rem);
+            font-style: italic; color: var(--white);
+            line-height: 1.55; margin-bottom: 50px;
+        }
+        .phil-quote span { color: var(--gold); }
+
+        .phil-pillars { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
+        .pillar {
+            background: rgba(255,255,255,.055);
+            border: 1px solid rgba(255,255,255,.09);
+            border-radius: 18px; padding: 30px;
+        }
+        .pillar-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem; color: rgba(200,156,42,.22);
+            font-weight: 700; line-height: 1; margin-bottom: 10px;
+        }
+        .pillar h4 { color: var(--gold-light); font-size: .95rem; font-weight: 600; margin-bottom: 8px; }
+        .pillar p { color: rgba(255,255,255,.5); font-size: .86rem; line-height: 1.65; }
+
+        /* ── YOUTUBE ─────────────────────────────── */
+        .youtube-section { background: #f0ebe0; padding: 92px 48px; }
+        .yt-inner { max-width: 1200px; margin: 0 auto; }
+        .yt-layout {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 68px; align-items: center; margin-top: 48px;
+        }
+        .yt-text p { font-size: 1.02rem; color: #555; line-height: 1.85; margin-bottom: 22px; }
+
+        .btn-youtube {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: #FF0000; color: var(--white);
+            padding: 14px 28px; border-radius: 9px;
+            font-weight: 600; font-size: .92rem;
+            text-decoration: none; transition: all .3s;
+            margin-bottom: 14px; margin-right: 12px;
+        }
+        .btn-youtube:hover { background: #cc0000; transform: translateY(-2px); box-shadow: 0 12px 30px rgba(255,0,0,.3); }
+
+        .btn-facebook {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: #1877F2; color: var(--white);
+            padding: 14px 28px; border-radius: 9px;
+            font-weight: 600; font-size: .92rem;
+            text-decoration: none; transition: all .3s;
+            margin-bottom: 14px;
+        }
+        .btn-facebook:hover { background: #1464cc; transform: translateY(-2px); box-shadow: 0 12px 30px rgba(24,119,242,.35); }
+
+        .yt-card {
+            background: var(--navy); border-radius: 22px;
+            overflow: hidden;
+            border: 1px solid rgba(200,156,42,.3);
+            box-shadow: 0 28px 80px rgba(0,0,0,.22);
+        }
+        .yt-card-header {
+            background: #FF0000; padding: 16px 24px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .yt-card-header span { color: white; font-weight: 700; font-size: .95rem; }
+
+        .yt-card-body { padding: 26px 24px 8px; }
+        .yt-card-body h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--white); font-size: 1.35rem; margin-bottom: 7px;
+        }
+        .yt-card-body p { color: rgba(255,255,255,.45); font-size: .88rem; }
+
+        .yt-tags { padding: 16px 24px 26px; display: flex; flex-wrap: wrap; gap: 8px; }
+        .ytag {
+            background: rgba(200,156,42,.13);
+            color: var(--gold-light);
+            border: 1px solid rgba(200,156,42,.25);
+            padding: 5px 14px; border-radius: 100px;
+            font-size: .78rem; font-weight: 500;
+        }
+
+        /* ── WHATSAPP JOIN ──────────────────────── */
+        .wa-section { background: var(--white); padding: 92px 48px; }
+        .wa-inner { max-width: 880px; margin: 0 auto; text-align: center; }
+        .wa-desc {
+            color: #666; font-size: 1.02rem; line-height: 1.8;
+            max-width: 580px; margin: 0 auto 44px;
+        }
+        .wa-benefits {
+            display: grid; grid-template-columns: repeat(3,1fr);
+            gap: 16px; margin-bottom: 48px;
+        }
+        .wa-ben {
+            background: #f0fff6;
+            border: 1px solid #b7f0d0;
+            border-radius: 14px; padding: 22px 16px;
+        }
+        .wa-ben-icon { font-size: 1.5rem; display: block; margin-bottom: 9px; }
+        .wa-ben p { font-size: .86rem; color: #1d6e47; font-weight: 600; }
+
+        .iframe-wrap {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 18px; overflow: hidden;
+            box-shadow: 0 10px 50px rgba(0,0,0,.09);
+        }
+        .iframe-header {
+            background: #25D366; padding: 16px 24px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .iframe-header span { color: white; font-weight: 700; font-size: .95rem; }
+        .iframe-header svg { width: 26px; height: 26px; fill: white; }
+
+        .iframe-body iframe {
+            width: 100%; height: 640px;
+            border: none; display: block;
+        }
+
+        /* ── FOOTER ─────────────────────────────── */
+        footer {
+            background: var(--navy);
+            padding: 52px 48px 32px;
+            border-top: 1px solid rgba(200,156,42,.2);
+        }
+        .footer-grid {
+            max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: 1.6fr 1fr 1fr;
+            gap: 48px; margin-bottom: 40px;
+        }
+        .footer-brand h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold); font-size: 1.45rem; margin-bottom: 12px;
+        }
+        .footer-brand p { color: rgba(255,255,255,.38); font-size: .88rem; line-height: 1.75; max-width: 270px; }
+        .socials { display: flex; gap: 10px; margin-top: 22px; }
+        .soc {
+            width: 40px; height: 40px; border-radius: 10px;
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.1);
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; color: rgba(255,255,255,.55);
+            font-size: .88rem; font-weight: 700;
+            transition: all .3s;
+        }
+        .soc:hover { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+
+        .footer-col h4 {
+            color: rgba(255,255,255,.55); font-size: .74rem;
+            letter-spacing: .12em; text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a {
+            color: rgba(255,255,255,.35); text-decoration: none;
+            font-size: .88rem; transition: color .25s;
+        }
+        .footer-col ul li a:hover { color: var(--gold); }
+
+        .footer-bottom {
+            max-width: 1200px; margin: 0 auto;
+            border-top: 1px solid rgba(255,255,255,.07);
+            padding-top: 24px; text-align: center;
+            color: rgba(255,255,255,.2); font-size: .8rem; line-height: 1.7;
+        }
+
+        /* ── RESPONSIVE ─────────────────────────── */
+        @media (max-width: 900px) {
+            nav { padding: 14px 20px; }
+            .nav-links { display: none; }
+            .hero { padding: 100px 24px 60px; }
+            .hero-content { grid-template-columns: 1fr; gap: 44px; text-align: center; }
+            .hero-photo-side { order: -1; }
+            .photo-ring-outer, .hero-photo, .photo-placeholder { width: 240px; height: 240px; }
+            .hero-ctas { justify-content: center; }
+            .stats-bar { padding: 28px 20px; }
+            .stats-inner { grid-template-columns: repeat(2,1fr); gap: 20px; }
+            .section { padding: 60px 24px; }
+            .about-grid { grid-template-columns: 1fr; gap: 36px; }
+            .expertise-grid { grid-template-columns: 1fr; }
+            .roles-grid { grid-template-columns: repeat(2,1fr); }
+            .phil-pillars { grid-template-columns: 1fr; }
+            .yt-layout { grid-template-columns: 1fr; gap: 36px; }
+            .wa-benefits { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+            .philosophy-section { padding: 60px 24px; }
+            .youtube-section, .wa-section { padding: 60px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── NAV ────────────────────────────────────── -->
+<nav>
+    <div class="nav-logo">GS Paaji</div>
+    <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#expertise">Expertise</a></li>
+        <li><a href="#roles">Beyond Markets</a></li>
+        <li><a href="#youtube">YouTube</a></li>
+        <li><a href="#join">Join Group</a></li>
+    </ul>
+</nav>
+
+<!-- ── HERO ───────────────────────────────────── -->
+<section class="hero">
+    <div class="hero-lattice"></div>
+    <div class="hero-content">
+        <div class="hero-text">
+            <div class="hero-badge">35+ Years of Market Mastery</div>
+            <h1 class="hero-name">
+                Gurvir Singh Bhatia
+                <span>GS Paaji</span>
+            </h1>
+            <p class="hero-title">Stock Market Mentor &nbsp;·&nbsp; Option Selling Specialist &nbsp;·&nbsp; Retired</p>
+            <p class="hero-desc">
+                From humble beginnings in India to financial independence in the USA — I'm here to share
+                <strong>decades of real market wisdom</strong> with the South Asian community.
+                No courses. No commissions. Just knowledge, respect, and long-term relationships.
+            </p>
+            <div class="hero-ctas">
+                <a href="#join" class="btn-gold">💬 Join WhatsApp Group</a>
+                <a href="https://www.youtube.com/@GSpaji" target="_blank" class="btn-ghost">▶ Watch on YouTube</a>
+            </div>
+        </div>
+
+        <div class="hero-photo-side">
+            <div class="photo-ring-outer">
+                <!--
+                ╔══════════════════════════════════════════════════════╗
+                ║  PHOTO SETUP NOTE                                    ║
+                ║  Facebook blocks direct image hotlinking.            ║
+                ║  Steps:                                              ║
+                ║  1. Download GS Paaji's profile photo from Facebook  ║
+                ║  2. Host it (e.g. upload to your website / CDN)      ║
+                ║  3. Replace this div with:                           ║
+                ║     <img class="hero-photo"                          ║
+                ║          src="YOUR_IMAGE_URL"                        ║
+                ║          alt="GS Paaji – Gurvir Singh Bhatia">       ║
+                ╚══════════════════════════════════════════════════════╝
+                -->
+                <div class="photo-placeholder">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="36" r="22"/>
+                        <ellipse cx="50" cy="84" rx="34" ry="19"/>
+                    </svg>
+                    <p>Download profile photo from Facebook &amp; replace this placeholder</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── STATS BAR ──────────────────────────────── -->
+<div class="stats-bar">
+    <div class="stats-inner">
+        <div>
+            <div class="stat-num"><span class="count" data-to="35">0</span>+</div>
+            <div class="stat-label">Years in Markets</div>
+        </div>
+        <div>
+            <div class="stat-num"><span class="count" data-to="1988">0</span></div>
+            <div class="stat-label">Investing Since</div>
+        </div>
+        <div>
+            <div class="stat-num">$0</div>
+            <div class="stat-label">Fees &amp; Commissions</div>
+        </div>
+        <div>
+            <div class="stat-num">∞</div>
+            <div class="stat-label">Knowledge Shared</div>
+        </div>
+    </div>
+</div>
+
+<!-- ── ABOUT ──────────────────────────────────── -->
+<section class="section about-section" id="about">
+    <div class="section-inner">
+        <div class="about-grid">
+
+            <!-- left col -->
+            <div>
+                <p class="section-eyebrow">The Man Behind the Mission</p>
+                <h2 class="section-title">A Journey from Humble Beginnings<br>to Financial Wisdom</h2>
+                <div class="about-prose">
+                    <p>
+                        GS Paaji — known to thousands as <strong>Gurvir Singh Bhatia</strong> — began his market journey in <strong>1988</strong>, long before the era of online trading and financial influencers. Starting as a medical representative in India, he carried big dreams and an unwavering belief that financial freedom was achievable for anyone willing to learn and stay patient.
+                    </p>
+                    <p>
+                        After relocating to the United States, he navigated careers across multiple industries — including real estate and hospitality — while continuously building wealth through the stock market. At <strong>55, he retired from active employment</strong> and dedicated himself entirely to investing and wealth preservation.
+                    </p>
+                    <p>
+                        Today, GS Paaji channels his hard-won wisdom into educating the South Asian community — entirely free of charge. His philosophy: true <em>daulat</em> (wealth) is sustainable, transferable, and built through patience and knowledge — never through gambling or shortcuts.
+                    </p>
+                </div>
+                <div class="blockquote">
+                    <p>"All I ask in return is respect and a long-term relationship. Knowledge is my gift to this community."</p>
+                    <cite>— GS Paaji (Gurvir Singh Bhatia)</cite>
+                </div>
+            </div>
+
+            <!-- right col: cards -->
+            <div class="about-cards">
+                <div class="acard">
+                    <div class="acard-icon">🤝</div>
+                    <h4>No Fees, Ever</h4>
+                    <p>GS Paaji charges absolutely nothing. His reward is genuine respect and long-term relationships with the people he mentors.</p>
+                </div>
+                <div class="acard">
+                    <div class="acard-icon">🌏</div>
+                    <h4>South Asian Community First</h4>
+                    <p>His mission is laser-focused on empowering the South Asian diaspora with the financial literacy tools that weren't always accessible to them.</p>
+                </div>
+                <div class="acard">
+                    <div class="acard-icon">📈</div>
+                    <h4>Daulat, Not Just Paisa</h4>
+                    <p>He teaches the crucial difference between money (paisa) and wealth (daulat) — helping people build sustainable, generational financial security.</p>
+                </div>
+                <div class="acard">
+                    <div class="acard-icon">🙏</div>
+                    <h4>Rooted in Gratitude</h4>
+                    <p>GS Paaji attributes his success to blessings, hard work, and community — and gives back as a sincere act of gratitude, never for profit.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ── EXPERTISE ──────────────────────────────── -->
+<section class="section expertise-section" id="expertise">
+    <div class="section-inner">
+        <div class="expertise-header">
+            <p class="section-eyebrow">Core Expertise</p>
+            <h2 class="section-title light">Mastery Built Over 35+ Years</h2>
+            <p>Self-taught through decades of gains, losses, and continuous refinement — every lesson GS Paaji shares is practical, battle-tested wisdom.</p>
+        </div>
+        <div class="expertise-grid">
+            <div class="ecard">
+                <div class="ecard-icon">📉</div>
+                <h3>Put Option Selling</h3>
+                <p>His core specialty and primary focus. GS Paaji teaches put option selling as a high-probability, income-generating strategy — the foundation of his retirement income model.</p>
+            </div>
+            <div class="ecard">
+                <div class="ecard-icon">📊</div>
+                <h3>Long-Term Stock Investing</h3>
+                <p>Build positions in fundamentally sound companies, hold through volatility, and let compounding do the heavy lifting. Patience is the real edge.</p>
+            </div>
+            <div class="ecard">
+                <div class="ecard-icon">🏠</div>
+                <h3>Real Estate + Equities</h3>
+                <p>Combining rental income with market returns is how GS Paaji built his lasting wealth — a two-track approach to true diversification.</p>
+            </div>
+            <div class="ecard">
+                <div class="ecard-icon">🧠</div>
+                <h3>Emotional Discipline</h3>
+                <p>Markets punish emotional decisions. GS Paaji emphasizes patience, process, and control — the mental edge that separates investors from gamblers.</p>
+            </div>
+            <div class="ecard">
+                <div class="ecard-icon">🔑</div>
+                <h3>Converting Income to Wealth</h3>
+                <p>How to take everyday earnings and deploy them strategically into assets that grow, compound, and transfer to the next generation.</p>
+            </div>
+            <div class="ecard">
+                <div class="ecard-icon">🎓</div>
+                <h3>Beginner-Friendly Education</h3>
+                <p>No jargon, no gatekeeping. GS Paaji meets beginners where they are and walks them step-by-step into the world of investing with warmth and patience.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── ROLES ──────────────────────────────────── -->
+<section class="section roles-section" id="roles">
+    <div class="section-inner">
+        <div class="roles-header">
+            <p class="section-eyebrow">Beyond the Markets</p>
+            <h2 class="section-title">A Man of Many Talents</h2>
+            <p>GS Paaji is not just an investor — he is a creative, athletic, and entrepreneurial spirit who brings the same discipline and passion to every role he inhabits.</p>
+        </div>
+        <div class="roles-grid">
+            <div class="rcard">
+                <span class="rcard-emoji">🎬</span>
+                <h3>Producer</h3>
+                <p>Behind the camera, bringing creative visions to life with the same strategic thinking he applies to the market.</p>
+            </div>
+            <div class="rcard">
+                <span class="rcard-emoji">🎭</span>
+                <h3>Actor</h3>
+                <p>On stage and screen, GS Paaji brings authenticity, depth, and presence to every character.</p>
+            </div>
+            <div class="rcard">
+                <span class="rcard-emoji">🎾</span>
+                <h3>Tennis Player</h3>
+                <p>On the court, the same focus, patience, and strategy that defines his investing shapes his game.</p>
+            </div>
+            <div class="rcard">
+                <span class="rcard-emoji">🎙️</span>
+                <h3>Podcaster</h3>
+                <p>Sharing knowledge, stories, and insights through long-form conversation that goes far beyond charts and numbers.</p>
+            </div>
+            <div class="rcard">
+                <span class="rcard-emoji">📺</span>
+                <h3>YouTuber</h3>
+                <p>Building a free educational library for the South Asian community via his channel <a href="https://www.youtube.com/@GSpaji" target="_blank" style="color:var(--gold);text-decoration:none;">@GSpaji</a>.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── PHILOSOPHY ─────────────────────────────── -->
+<section class="philosophy-section">
+    <div class="philosophy-inner">
+        <p class="section-eyebrow" style="text-align:center;color:var(--gold-light);margin-bottom:22px;">GS Paaji's Philosophy</p>
+        <p class="phil-quote">
+            "Dream big. Plan. Implement. Then enjoy the fruits.<br>
+            The universe rewards those who try with <span>sincerity and patience.</span>"
+        </p>
+        <div class="phil-pillars">
+            <div class="pillar">
+                <div class="pillar-num">01</div>
+                <h4>Knowledge Before Capital</h4>
+                <p>Never invest in what you don't understand. Educate yourself before a single rupee or dollar enters the market.</p>
+            </div>
+            <div class="pillar">
+                <div class="pillar-num">02</div>
+                <h4>Patience Pays</h4>
+                <p>Wealth is not built in a day. The greatest returns come to those who hold conviction and stay the course through volatility.</p>
+            </div>
+            <div class="pillar">
+                <div class="pillar-num">03</div>
+                <h4>Lift Others Up</h4>
+                <p>True success multiplies when shared. GS Paaji's entire platform exists to lift the South Asian community higher — together.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── YOUTUBE ─────────────────────────────────── -->
+<section class="youtube-section" id="youtube">
+    <div class="yt-inner">
+        <p class="section-eyebrow">Watch &amp; Learn — 100% Free</p>
+        <h2 class="section-title">GS Paaji on YouTube</h2>
+        <div class="yt-layout">
+            <div class="yt-text">
+                <p>
+                    GS Paaji's YouTube channel is your free gateway to decades of market knowledge. From put option selling fundamentals to real estate investing, stock analysis, and life lessons about building lasting wealth — every video is crafted to educate, inspire, and empower.
+                </p>
+                <p>
+                    No paid courses hidden behind the content. No upsells or commissions. Just pure, authentic knowledge from someone who has lived it all — and genuinely wants you to succeed.
+                </p>
+                <div>
+                    <a href="https://www.youtube.com/@GSpaji" target="_blank" class="btn-youtube">
+                        <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:white"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+                        Subscribe on YouTube
+                    </a>
+                    <a href="https://www.facebook.com/gsbhaji" target="_blank" class="btn-facebook">
+                        <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        Follow on Facebook
+                    </a>
+                </div>
+            </div>
+
+            <div class="yt-card">
+                <div class="yt-card-header">
+                    <svg viewBox="0 0 24 24" style="width:28px;height:28px;fill:white"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+                    <span>@GSpaji</span>
+                </div>
+                <div class="yt-card-body">
+                    <h3>GS Paaji — Market Wisdom</h3>
+                    <p>Free stock market education for the South Asian community</p>
+                </div>
+                <div class="yt-tags">
+                    <span class="ytag">Put Option Selling</span>
+                    <span class="ytag">Stock Analysis</span>
+                    <span class="ytag">Real Estate</span>
+                    <span class="ytag">Wealth Building</span>
+                    <span class="ytag">Beginner Guides</span>
+                    <span class="ytag">Daulat vs Paisa</span>
+                    <span class="ytag">Market Psychology</span>
+                    <span class="ytag">Retirement Planning</span>
+                    <span class="ytag">Options Education</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── WHATSAPP JOIN ───────────────────────────── -->
+<section class="wa-section" id="join">
+    <div class="wa-inner">
+        <p class="section-eyebrow" style="color:#25D366;">Join the Community</p>
+        <h2 class="section-title">Request to Join GS Paaji's WhatsApp Group</h2>
+        <p class="wa-desc">
+            Fill out the form below to request access to GS Paaji's exclusive WhatsApp group — a private community built on knowledge sharing, respect, and genuine long-term connection. No spam. Just learning together.
+        </p>
+
+        <div class="wa-benefits">
+            <div class="wa-ben">
+                <span class="wa-ben-icon">📡</span>
+                <p>Live Market Insights</p>
+            </div>
+            <div class="wa-ben">
+                <span class="wa-ben-icon">🧑‍🏫</span>
+                <p>Direct Access to GS Paaji</p>
+            </div>
+            <div class="wa-ben">
+                <span class="wa-ben-icon">💰</span>
+                <p>Completely Free, Always</p>
+            </div>
+        </div>
+
+        <div class="iframe-wrap">
+            <div class="iframe-header">
+                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                <span>GS Paaji WhatsApp Group — Membership Request</span>
+            </div>
+            <div class="iframe-body">
+                <!--
+                ╔══════════════════════════════════════════════════════════════╗
+                ║  GOOGLE FORMS SETUP                                          ║
+                ║  1. Open your Google Form                                    ║
+                ║  2. Click Send → Embed (< >) tab                             ║
+                ║  3. Copy the src URL from the iframe code Google provides    ║
+                ║  4. Paste it below, replacing REPLACE_WITH_YOUR_FORM_ID      ║
+                ║                                                              ║
+                ║  Example src:                                                ║
+                ║  https://docs.google.com/forms/d/e/1FAIpQLSe.../viewform     ║
+                ║       ?embedded=true                                         ║
+                ╚══════════════════════════════════════════════════════════════╝
+                -->
+                <iframe
+                    src="https://docs.google.com/forms/d/e/REPLACE_WITH_YOUR_FORM_ID/viewform?embedded=true"
+                    title="Request to Join GS Paaji's WhatsApp Group"
+                    allowfullscreen>
+                    Loading form…
+                </iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────── -->
+<footer>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h3>GS Paaji</h3>
+            <p>Gurvir Singh Bhatia — sharing 35+ years of market wisdom with the South Asian community. Free. Always. No courses, no commissions.</p>
+            <div class="socials">
+                <a class="soc" href="https://www.youtube.com/@GSpaji" target="_blank" title="YouTube">▶</a>
+                <a class="soc" href="https://www.facebook.com/gsbhaji" target="_blank" title="Facebook">f</a>
+                <a class="soc" href="#join" title="WhatsApp Group">💬</a>
+            </div>
+        </div>
+        <div class="footer-col">
+            <h4>Navigation</h4>
+            <ul>
+                <li><a href="#about">About GS Paaji</a></li>
+                <li><a href="#expertise">Market Expertise</a></li>
+                <li><a href="#roles">Beyond Markets</a></li>
+                <li><a href="#youtube">YouTube Channel</a></li>
+                <li><a href="#join">Join WhatsApp Group</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Follow Along</h4>
+            <ul>
+                <li><a href="https://www.youtube.com/@GSpaji" target="_blank">YouTube — @GSpaji</a></li>
+                <li><a href="https://www.facebook.com/gsbhaji" target="_blank">Facebook — gsbhaji</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2025 GS Paaji — Gurvir Singh Bhatia. All knowledge shared freely. For educational purposes only. Nothing on this page constitutes financial or investment advice. Always do your own research.</p>
+    </div>
+</footer>
+
+<script>
+    // ── Animated counters ──────────────────────
+    function runCounter(el) {
+        const target = parseInt(el.dataset.to, 10);
+        const start  = target > 200 ? target - 300 : 0;
+        const dur    = 1800;
+        const t0     = performance.now();
+
+        (function tick(now) {
+            const p   = Math.min((now - t0) / dur, 1);
+            const ease = 1 - Math.pow(1 - p, 4);
+            el.textContent = Math.round(start + (target - start) * ease);
+            if (p < 1) requestAnimationFrame(tick);
+        })(t0);
+    }
+
+    const statsBar = document.querySelector('.stats-bar');
+    let counted = false;
+    new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting && !counted) {
+            counted = true;
+            document.querySelectorAll('.count').forEach(runCounter);
+        }
+    }, { threshold: .5 }).observe(statsBar);
+
+    // ── Nav active highlight on scroll ─────────
+    const navAs = document.querySelectorAll('.nav-links a[href^="#"]');
+    window.addEventListener('scroll', () => {
+        const y = window.scrollY + 120;
+        document.querySelectorAll('section[id]').forEach(sec => {
+            if (y >= sec.offsetTop && y < sec.offsetTop + sec.offsetHeight) {
+                navAs.forEach(a => {
+                    a.style.color = a.getAttribute('href') === '#' + sec.id
+                        ? 'var(--gold)' : 'rgba(255,255,255,.7)';
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>
